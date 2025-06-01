@@ -3,12 +3,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace Infraestructure.DatabaseContext
 {
-    internal class DatabaseContext : DbContext
+    public class ApplicationDatabaseContext : DbContext
     {
 
         public readonly IConfiguration _configuration;
 
-        public DatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
+        public ApplicationDatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }

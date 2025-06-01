@@ -1,0 +1,51 @@
+services:
+  fastfood:
+    image: ${DOCKER_REGISTRY-}fastfood
+    hostname: fastfood
+    restart: always
+    networks:
+      api:
+        aliases:
+          - fastfood_api.local
+    build:
+      context: .
+      dockerfile: FastFood/Dockerfile
+    volumes:
+      - files:/home/api/files
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    container_name: lanchonete_db
+    hostname: lanchonete_db
+    restart: always
+    networks:
+      api:
+        aliases:
+          - lanchonete_db.local
+      database:
+        aliases:
+          - lanchonete_db.local
+    volumes:
+      - psql:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "Senha@123"
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+
+volumes:
+  files:
+    external: false
+  psql:
+    external: false
+
+networks:
+  api:
+  database:
+    external: false
+    name: database
+    driver: bridge
