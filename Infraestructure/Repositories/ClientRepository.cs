@@ -12,22 +12,33 @@ namespace Infraestructure.Repositories
         {
         }
 
-        public async Task<List<Client>> FilterClientAsync(string? name, string? cpf, string? email)
+        public async Task<List<Client>> FilterClientAsync(string? name, string? cpf, string? email) // TODO: Ajustar filtro por CPF, o EFCore não consegue traduzir.
         {
             QueryExpression<Client> queryBuilder = new();
 
             if (!string.IsNullOrEmpty(name))
-                queryBuilder.And(c => c.Name.Contains(name));
+                queryBuilder.Where(c => c.Name.Contains(name));
 
             if (!string.IsNullOrEmpty(cpf))
-                queryBuilder.And(c => c.CPF.Value == cpf);
+                queryBuilder.Where(c => c.CPF.Value == cpf);
 
             if (!string.IsNullOrEmpty(email))
-                queryBuilder.And(c => c.Email.Value == email);
+                queryBuilder.Where(c => c.Email.Value == email);
 
             var predicate = queryBuilder.Build();
 
             return await this.GetManyAsync(predicate);
+        }
+
+        public async Task<Client?> GetClientByCpfAsync(string cpf) // TODO: Ajustar filtro por CPF, o EFCore não consegue traduzir.
+        {
+            QueryExpression<Client> queryBuilder = new();
+
+            queryBuilder.Where(x => x.CPF.Value == cpf);
+
+            var predicate = queryBuilder.Build();
+
+            return await this.GetSingleAsync(predicate);
         }
     }
 }

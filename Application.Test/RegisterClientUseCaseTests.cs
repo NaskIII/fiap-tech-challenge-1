@@ -1,5 +1,5 @@
 ﻿using Application.Dtos.Client.Request;
-using Application.UseCases;
+using Application.UseCases.ClientUseCases;
 using Domain.Entities;
 using Domain.RepositoryInterfaces;
 using Domain.ValueObjects;

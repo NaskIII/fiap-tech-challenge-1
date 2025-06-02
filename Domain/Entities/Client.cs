@@ -22,6 +22,7 @@ namespace Domain.Entities
             Name = string.Empty;
             CPF = default!;
             Email = default!;
+            this.RegisterDate = DateTime.UtcNow;
 
             UpdateName(name);
             UpdateCPF(cpf);

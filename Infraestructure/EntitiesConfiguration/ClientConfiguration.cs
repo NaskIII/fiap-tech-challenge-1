@@ -23,7 +23,6 @@ namespace Infraestructure.EntitiesConfiguration
 
             builder.HasKey(x => x.ClientId);
             builder.Property(x => x.ClientId)
-                .HasDefaultValueSql("uuid_generate_v4()")
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);

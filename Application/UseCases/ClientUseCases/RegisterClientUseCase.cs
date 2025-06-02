@@ -5,9 +5,9 @@ using Domain.RepositoryInterfaces;
 using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
-namespace Application.UseCases
+namespace Application.UseCases.ClientUseCases
 {
-    public class RegisterClientUseCase : IUseCase<RegisterClientRequest, Guid>
+    public class RegisterClientUseCase : IRegisterClientUseCase
     {
         private readonly IClientRepository _clientRepository;
         private readonly ILogger _logger;

@@ -6,206 +6,59 @@ namespace Infraestructure.QueryExpressionBuilder.QueryExpresson
 {
     public class QueryExpression<T> where T : class
     {
-
-        private bool QueryInitialized { get; set; } = false;
-
         private Expression<Func<T, bool>>? query;
 
-        public Expression<Func<T, bool>> Query
-        {
-            get
-            {
-                if (query == null)
-                {
-                    throw new InvalidOperationException(QueryBuilderMessages.QueryBuilderNotInitialized);
-                }
+        /// <summary>
+        /// Expressão final construída. Lança exceção se ainda não foi inicializada.
+        /// </summary>
+        public Expression<Func<T, bool>> Query =>
+            query ?? throw new InvalidOperationException(QueryBuilderMessages.QueryBuilderNotInitialized);
 
-                return query;
-            }
-            set
-            {
-                query = value ?? throw new InvalidOperationException(QueryBuilderMessages.QueryBuilderNotInitialized);
-            }
+        public QueryExpression()
+        {
+            // Inicializa com uma expressão verdadeira para permitir composição imediata
+            query = PredicateBuilder.New<T>(true);
         }
 
-        public QueryExpression() { }
-
-        public Expression<Func<T, bool>> True()
-        {
-            this.QueryInitialized = true;
-
-            return PredicateBuilder.New<T>(true);
-        }
-
-        public Expression<Func<T, bool>> False()
-        {
-            this.QueryInitialized = true;
-
-            return PredicateBuilder.New<T>(false);
-        }
-
-        internal QueryExpression<T> InitializeQueryChecker()
-        {
-            this.QueryInitialized = true;
-
-            return this;
-        }
-
-        public QueryExpression<T> BeginFilter()
-        {
-            this.QueryInitialized = true;
-
-            this.Query = this.True();
-
-            return this;
-        }
-
+        /// <summary>
+        /// Adiciona um predicado à expressão existente usando operador AND.
+        /// </summary>
         public QueryExpression<T> Where(Expression<Func<T, bool>> expression)
         {
-            if (this.QueryInitialized == true)
-            {
-                And(expression);
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression), QueryBuilderMessages.ExpressionIsNull);
 
-                return this;
-            }
-
-            Query = expression ?? throw new ArgumentNullException(nameof(expression).ToString(), QueryBuilderMessages.ExpressionIsNull);
-
-            this.QueryInitialized = true;
-
+            query = query!.And(expression);
             return this;
         }
 
+        /// <summary>
+        /// Adiciona outra QueryExpression à expressão atual usando operador AND.
+        /// </summary>
         public QueryExpression<T> And(QueryExpression<T> expression)
         {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression).ToString(), QueryBuilderMessages.ExpressionIsNull);
-            }
-            else if (this.QueryInitialized == false)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryIsNotInitialized);
-            }
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression), QueryBuilderMessages.ExpressionIsNull);
 
-            Query = Query.And(expression.Build());
-
+            query = query!.And(expression.Build());
             return this;
         }
 
+        /// <summary>
+        /// Adiciona diretamente uma nova expressão com operador AND.
+        /// </summary>
         public QueryExpression<T> And(Expression<Func<T, bool>> expression)
         {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression).ToString(), QueryBuilderMessages.ExpressionIsNull);
-            }
-            else if (this.QueryInitialized == false)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryIsNotInitialized);
-            }
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression), QueryBuilderMessages.ExpressionIsNull);
 
-            Query = Query.And(expression);
-
+            query = query!.And(expression);
             return this;
         }
 
-        public QueryExpression<T> Or(QueryExpression<T> expression)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression).ToString(), QueryBuilderMessages.ExpressionIsNull);
-            }
-            else if (this.QueryInitialized == false)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryIsNotInitialized);
-            }
-
-            Query = Query.Or(expression.Build());
-
-            return this;
-        }
-
-        public QueryExpression<T> Or(Expression<Func<T, bool>> expression)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression).ToString(), QueryBuilderMessages.ExpressionIsNull);
-            }
-            else if (this.QueryInitialized == false)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryIsNotInitialized);
-            }
-
-            Query = Query.Or(expression);
-
-            return this;
-        }
-
-        public QueryExpression<T> NestOr(QueryExpression<T> expression)
-        {
-            QueryExpression<T> innerQuery = new();
-            innerQuery = innerQuery.Where(expression.Build());
-
-            this.Or(innerQuery);
-
-            return this;
-        }
-
-        public QueryExpression<T> NestOr(Expression<Func<T, bool>> expression)
-        {
-            QueryExpression<T> innerQuery = new();
-            innerQuery = innerQuery.Where(expression);
-
-            this.Or(innerQuery);
-
-            return this;
-        }
-
-        public QueryExpression<T> NestAnd(Expression<Func<T, bool>> expression)
-        {
-            QueryExpression<T> innerQuery = new();
-            innerQuery = innerQuery.Where(expression);
-
-            this.And(innerQuery);
-
-            return this;
-        }
-
-        public QueryExpression<T> NestAnd(QueryExpression<T> expression)
-        {
-            QueryExpression<T> innerQuery = new();
-            innerQuery = innerQuery.Where(expression.Build());
-
-            this.And(innerQuery);
-
-            return this;
-        }
-
-        public Expression<Func<T, bool>> Build()
-        {
-            if (Query == null)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryBuilderNotInitialized);
-            }
-            else if (this.QueryInitialized == false)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryIsNotInitialized);
-            }
-
-            return Query;
-        }
-
-        public Func<T, bool> Compile()
-        {
-            if (Query == null)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryBuilderNotInitialized);
-            }
-            else if (this.QueryInitialized == false)
-            {
-                throw new InvalidOperationException(QueryBuilderMessages.QueryIsNotInitialized);
-            }
-
-            return this.Build().Compile();
-        }
+        /// <summary>
+        /// Retorna a expressão construída para uso externo (ex: no repositório).
+        /// </summary>
+        public Expression<Func<T, bool>> Build() => Query;
     }
 }

@@ -1,4 +1,6 @@
-﻿using Application.Mappers;
+﻿using Application.Interfaces;
+using Application.Mappers;
+using Application.UseCases.ClientUseCases;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,13 @@ namespace Application
             IMapper mapper = mapperConfig.CreateMapper();
 
             services.AddSingleton(mapper);
+            #endregion
+
+            #region Use Cases
+            services.AddScoped<IRegisterClientUseCase, RegisterClientUseCase>();
+            services.AddScoped<IFilterClientsUseCase, FilterClientsUseCase>();
+            services.AddScoped<IRetrieveClientUseCase, RetrieveClientUseCase>();
+            services.AddScoped<IClientIdentificationUseCase, ClientIdentificationUseCase>();
             #endregion
 
             return services;
