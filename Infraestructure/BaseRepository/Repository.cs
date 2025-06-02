@@ -47,13 +47,14 @@ namespace Infraestructure.BaseRepository
             }
         }
 
-        public async Task<bool> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             try
             {
                 _ = DbSet.Add(entity);
                 var rowsAffected = await Context.SaveChangesAsync();
-                return rowsAffected > 0;
+
+                return entity;
             }
             catch (DbUpdateException dbEx)
             {
@@ -78,7 +79,7 @@ namespace Infraestructure.BaseRepository
             }
         }
 
-        public void CommitTransaction()
+        public async Task CommitTransactionAsync()
         {
             try
             {
@@ -87,7 +88,7 @@ namespace Infraestructure.BaseRepository
                     throw new TransactionIsNotOpen("A transação do banco de dados não foi aberta. Certifique-se de abrir a transação antes de realizar operações de banco de dados.");
                 }
 
-                _transaction.Commit();
+                await _transaction.CommitAsync();
                 _transactionOpened = false;
             }
             catch (Exception ex)
@@ -119,7 +120,7 @@ namespace Infraestructure.BaseRepository
             }
         }
 
-        public void Rollback()
+        public async Task RollbackAsync()
         {
             try
             {
@@ -128,7 +129,7 @@ namespace Infraestructure.BaseRepository
                     throw new TransactionIsNotOpen("A transação do banco de dados não foi aberta. Certifique-se de abrir a transação antes de realizar operações de banco de dados.");
                 }
 
-                _transaction.Rollback();
+                await _transaction.RollbackAsync();
                 _transactionOpened = false;
             }
             catch (Exception ex)
@@ -137,7 +138,7 @@ namespace Infraestructure.BaseRepository
             }
         }
 
-        public virtual async Task<bool> UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity)
         {
             try
             {
@@ -151,7 +152,7 @@ namespace Infraestructure.BaseRepository
 
                 var rowsAffected = await Context.SaveChangesAsync();
 
-                return rowsAffected > 0;
+                return entity;
             }
             catch (DbUpdateConcurrencyException)
             {

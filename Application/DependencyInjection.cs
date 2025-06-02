@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Mappers;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +12,7 @@ namespace Application
             #region AutoMapper
             MapperConfiguration mapperConfig = new(cfg =>
             {
-                
+                cfg.AddProfile<ClientMappers>();
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
