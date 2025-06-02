@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Infraestructure.EntitiesConfiguration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Infraestructure.DatabaseContext
@@ -7,6 +9,13 @@ namespace Infraestructure.DatabaseContext
     {
 
         public readonly IConfiguration _configuration;
+
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<Payment> Payments => Set<Payment>();
+        public DbSet<Client> Clients => Set<Client>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
         public ApplicationDatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
@@ -31,6 +40,8 @@ namespace Infraestructure.DatabaseContext
             //modelBuilder.SeedDatabase();
 
             //this.ConfigureModel(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDatabaseContext).Assembly);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
