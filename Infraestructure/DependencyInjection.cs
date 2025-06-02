@@ -1,5 +1,7 @@
-﻿using Infraestructure.DatabaseContext;
+﻿using Domain.RepositoryInterfaces;
+using Infraestructure.DatabaseContext;
 using Infraestructure.OpenApiConfiguration;
+using Infraestructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -82,6 +84,10 @@ namespace Infraestructure
             var connectionString = configuration.GetConnectionString("DBConnectionString");
 
             services.AddDbContext<ApplicationDatabaseContext>(options => options.UseNpgsql(connectionString));
+            #endregion
+
+            #region Repository
+            services.AddScoped<IClientRepository, ClientRepository>();
             #endregion
 
             return services;

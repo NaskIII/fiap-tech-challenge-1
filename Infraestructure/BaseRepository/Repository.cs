@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Infraestructure.DatabaseContext;
 using Infraestructure.Exceptions;
 
-namespace Infraestructure.Repositories
+namespace Infraestructure.BaseRepository
 {
-    internal class Repository<T> : ReadonlyRepository<T>, IRepository<T> where T : class
+    public class Repository<T> : ReadonlyRepository<T>, IRepository<T> where T : class
     {
         private IDbContextTransaction? _transaction;
         private bool _transactionOpened;

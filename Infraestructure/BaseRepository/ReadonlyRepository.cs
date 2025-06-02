@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Infraestructure.Repositories
+namespace Infraestructure.BaseRepository
 {
     public class ReadonlyRepository<T> : IReadonlyRepository<T> where T : class
     {
@@ -45,7 +45,7 @@ namespace Infraestructure.Repositories
 
         public async Task<bool> ExistsByIdAsync(params object[] ids)
         {
-            return (await DbSet.FindAsync(ids)) != null;
+            return await DbSet.FindAsync(ids) != null;
         }
 
         public async Task<T?> GetByIdAsync(params object[] ids)
