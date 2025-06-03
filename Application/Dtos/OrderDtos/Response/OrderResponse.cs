@@ -6,6 +6,7 @@ namespace Application.Dtos.OrderDtos.Response
     public class OrderResponse
     {
         public Guid OrderId { get; set; }
+        public int OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }
         public Guid? ClientId { get; set; }
         public ClientResponse Client {  get; set; } = default!;

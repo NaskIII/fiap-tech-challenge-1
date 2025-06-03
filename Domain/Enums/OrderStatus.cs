@@ -7,9 +7,6 @@ namespace Domain.Enums
         [Description("Pendente")]
         Pending,
 
-        [Description("Pago")]
-        Paid,
-
         [Description("Recebido")]
         Received,
 

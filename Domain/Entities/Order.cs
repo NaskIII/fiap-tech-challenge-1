@@ -5,6 +5,7 @@ namespace Domain.Entities
     public class Order
     {
         public Guid OrderId { get; private set; }
+        public int OrderNumber { get; private set; }
         public DateTime OrderDate { get; private set; } = DateTime.UtcNow;
         public Guid? ClientId { get; private set; }
         public virtual Client? Client { get; private set; }
@@ -43,13 +44,13 @@ namespace Domain.Entities
             return _orderItems.Sum(i => i.Total);
         }
 
-        public void MarkAsPaid(Guid paymentId)
+        public void MarkAsReceived(Guid paymentId)
         {
             if (OrderStatus != OrderStatus.Pending)
-                throw new InvalidOperationException("Only pending orders can be paid.");
+                throw new InvalidOperationException("Only pending orders can be marked as received.");
 
             PaymentId = paymentId;
-            OrderStatus = OrderStatus.Paid;
+            OrderStatus = OrderStatus.Received;
         }
 
         public void Cancel()

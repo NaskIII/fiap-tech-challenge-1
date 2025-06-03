@@ -1,7 +1,9 @@
-﻿using Domain.RepositoryInterfaces;
+﻿using Domain.BaseInterfaces;
+using Domain.RepositoryInterfaces;
 using Domain.Security;
 using Infraestructure.DatabaseContext;
 using Infraestructure.OpenApiConfiguration;
+using Infraestructure.PaymentGateway;
 using Infraestructure.Repositories;
 using Infraestructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -109,11 +111,13 @@ namespace Infraestructure
             services.AddScoped<IProductRespository, ProductRespository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
             #endregion
 
             #region Services
             services.AddSingleton<ITokenService, TokenService>();
             services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+            services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
             #endregion
 
             return services;

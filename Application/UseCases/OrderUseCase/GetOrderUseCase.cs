@@ -4,7 +4,6 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.RepositoryInterfaces;
-using System;
 
 namespace Application.UseCases.OrderUseCase
 {
