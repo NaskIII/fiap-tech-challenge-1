@@ -1,6 +1,4 @@
-﻿using Application.Security;
-using Domain.Entities;
-using Domain.ValueObjects;
+﻿using Domain.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

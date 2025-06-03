@@ -2,18 +2,12 @@
 using Application.Dtos.UserDtos.Request;
 using Application.Dtos.UserDtos.Response;
 using Application.Interfaces;
-using Application.Security;
 using AutoMapper;
 using Domain.Entities;
 using Domain.RepositoryInterfaces;
+using Domain.Security;
 using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.UseCases.UserUseCases
 {

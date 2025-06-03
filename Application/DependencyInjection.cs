@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Mappers;
 using Application.UseCases.ClientUseCases;
+using Application.UseCases.ProductCategoryUseCases;
 using Application.UseCases.UserUseCases;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ namespace Application
             {
                 cfg.AddProfile<ClientMappers>();
                 cfg.AddProfile<UserMappers>();
+                cfg.AddProfile<ProductCategoryMappers>();
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
@@ -34,6 +36,10 @@ namespace Application
             services.AddScoped<IFilterUserUseCase, FilterUserUseCase>();
             services.AddScoped<IGetUserUseCase, GetUserUseCase>();
             services.AddScoped<IAuthenticateUserUseCase, AuthenticateUserUseCase>();
+
+            services.AddScoped<IRegisterProductCategoryUseCase, RegisterProductCategoryUseCase>();
+            services.AddScoped<IFilterProductCategoryUseCase, FilterProductCategoryUseCase>();
+            services.AddScoped<IGetProductCategoryUseCase, GetProductCategoryUseCase>();
             #endregion
 
             return services;

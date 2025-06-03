@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Application.Security
+namespace Domain.Security
 {
     public interface ITokenService
     {
