@@ -106,6 +106,9 @@ namespace Infraestructure
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductRespository, ProductRespository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             #endregion
 
             #region Services
