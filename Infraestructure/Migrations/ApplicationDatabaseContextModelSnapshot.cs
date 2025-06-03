@@ -195,6 +195,44 @@ namespace Infraestructure.Migrations
                     b.ToTable("ProductCategories");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("8833c9af-a91a-411c-8b54-b554171287c0"),
+                            Email = "admin@admin.com",
+                            PasswordHash = "$2a$11$zMzsiOBzimzJNGVmnkdRleV34aqRNAtSe9Ys5lKqDZwN3hJS86jzK",
+                            UserName = "admin"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.HasOne("Domain.Entities.Client", "Client")

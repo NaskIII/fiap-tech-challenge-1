@@ -1,7 +1,9 @@
-﻿using Domain.RepositoryInterfaces;
+﻿using Application.Security;
+using Domain.RepositoryInterfaces;
 using Infraestructure.DatabaseContext;
 using Infraestructure.OpenApiConfiguration;
 using Infraestructure.Repositories;
+using Infraestructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,36 +20,50 @@ namespace Infraestructure
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
             #region Authentication JWT
-            string criptoKey = configuration.GetValue<string>("Cripto:Key") ?? throw new ArgumentNullException(nameof(criptoKey));
+            var jwtSection = configuration.GetSection("Jwt");
 
+            string? secretKey = jwtSection["SecretKey"];
+            string? issuer = jwtSection["Issuer"];
+            string? audience = jwtSection["Audience"];
 
-            var key = Encoding.ASCII.GetBytes(criptoKey);
+            if (string.IsNullOrWhiteSpace(secretKey) || string.IsNullOrWhiteSpace(issuer) || string.IsNullOrWhiteSpace(audience))
+                throw new InvalidOperationException("JWT settings are not properly configured in appsettings.");
 
-            services.AddAuthentication(x =>
+            var key = Encoding.UTF8.GetBytes(secretKey);
+
+            services.AddAuthentication(options =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
             {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+
+                    ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
 
-                x.Events = new JwtBearerEvents
+                options.Events = new JwtBearerEvents
                 {
-                    OnTokenValidated = validated =>
+                    OnTokenValidated = context =>
                     {
                         return Task.CompletedTask;
-                    },
+                    }
                 };
             });
+
             #endregion
 
             #region Open API & Scalar
@@ -88,6 +104,12 @@ namespace Infraestructure
 
             #region Repository
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            #endregion
+
+            #region Services
+            services.AddSingleton<ITokenService, TokenService>();
+            services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
             #endregion
 
             return services;

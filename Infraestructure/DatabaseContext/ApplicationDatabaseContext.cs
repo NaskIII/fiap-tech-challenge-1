@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Infraestructure.DatabaseConfiguration;
 using Infraestructure.EntitiesConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +38,7 @@ namespace Infraestructure.DatabaseContext
             //modelBuilder.OneToManyRelationship();
             //modelBuilder.OneToOneRelationship();
             //modelBuilder.Indexes();
-            //modelBuilder.SeedDatabase();
+            modelBuilder.SeedDatabase();
 
             //this.ConfigureModel(modelBuilder);
 
