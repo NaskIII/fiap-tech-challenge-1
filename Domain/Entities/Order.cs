@@ -60,6 +60,13 @@ namespace Domain.Entities
 
             OrderStatus = OrderStatus.Canceled;
         }
+
+        public void ChangeStatus(OrderStatus newStatus)
+        {
+            if (newStatus == OrderStatus.Canceled && OrderStatus == OrderStatus.Completed)
+                throw new InvalidOperationException("Completed orders cannot be canceled.");
+            OrderStatus = newStatus;
+        }
     }
 
 }

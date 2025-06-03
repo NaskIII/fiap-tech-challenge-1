@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FastFood.Controllers.V1
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize]
     [ApiController]
     [Route("api/v1/payment")]
     public class PaymentController : ControllerBase

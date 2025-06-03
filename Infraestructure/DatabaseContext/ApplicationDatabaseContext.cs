@@ -17,6 +17,7 @@ namespace Infraestructure.DatabaseContext
         public DbSet<Product> Products => Set<Product>();
         public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<KitchenQueue> KitchenQueues => Set<KitchenQueue>();
 
         public ApplicationDatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {

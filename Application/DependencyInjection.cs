@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
 using Application.Mappers;
+using Application.UseCases.CheckoutUseCases;
 using Application.UseCases.ClientUseCases;
+using Application.UseCases.KitchenQueueUseCases;
 using Application.UseCases.OrderUseCase;
 using Application.UseCases.ProductCategoryUseCases;
 using Application.UseCases.ProductUseCases;
@@ -53,6 +55,14 @@ namespace Application
             services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
             services.AddScoped<IFilterOrderUseCase, FilterOrderUseCase>();
             services.AddScoped<IGetOrderUseCase, GetOrderUseCase>();
+            
+            services.AddScoped<ICheckoutUseCase, CheckoutUseCase>();
+
+            services.AddScoped<IKitchenQueueListQueue, KitchenQueueListQueueUseCase>();
+            services.AddScoped<IKitchenEnqueueOrderUseCase, KitchenEnqueueOrderUseCase>();
+            services.AddScoped<IUpdateStatusKitchenQueueUseCase, UpdateStatusKitchenQueueUseCase>();
+            services.AddScoped<IKitchenDequeueOrderUseCase, KitchenDequeueOrderUseCase>();
+
             #endregion
 
             return services;

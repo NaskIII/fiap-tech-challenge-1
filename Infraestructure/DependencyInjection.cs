@@ -2,6 +2,7 @@
 using Domain.RepositoryInterfaces;
 using Domain.Security;
 using Infraestructure.DatabaseContext;
+using Infraestructure.Notification;
 using Infraestructure.OpenApiConfiguration;
 using Infraestructure.PaymentGateway;
 using Infraestructure.Repositories;
@@ -112,12 +113,14 @@ namespace Infraestructure
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IKitchenQueueRepository, KitchenQueueRepository>();
             #endregion
 
             #region Services
             services.AddSingleton<ITokenService, TokenService>();
             services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
             services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
+            services.AddSingleton<INotification, FakeNotificationService>();
             #endregion
 
             return services;
