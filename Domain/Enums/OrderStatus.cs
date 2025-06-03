@@ -4,6 +4,12 @@ namespace Domain.Enums
 {
     public enum OrderStatus
     {
+        [Description("Pendente")]
+        Pending,
+
+        [Description("Pago")]
+        Paid,
+
         [Description("Recebido")]
         Received,
 
@@ -14,6 +20,9 @@ namespace Domain.Enums
         Ready,
 
         [Description("Finalizado")]
-        Completed
+        Completed,
+
+        [Description("Cancelado")]
+        Canceled,
     }
 }
