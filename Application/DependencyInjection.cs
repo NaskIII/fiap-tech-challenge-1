@@ -2,6 +2,7 @@
 using Application.Mappers;
 using Application.UseCases.ClientUseCases;
 using Application.UseCases.ProductCategoryUseCases;
+using Application.UseCases.ProductUseCases;
 using Application.UseCases.UserUseCases;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +41,11 @@ namespace Application
             services.AddScoped<IRegisterProductCategoryUseCase, RegisterProductCategoryUseCase>();
             services.AddScoped<IFilterProductCategoryUseCase, FilterProductCategoryUseCase>();
             services.AddScoped<IGetProductCategoryUseCase, GetProductCategoryUseCase>();
+
+            services.AddScoped<IFilterProductUseCase, FilterProductUseCase>();
+            services.AddScoped<IGetProductUseCase, GetProductUseCase>();
+            services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
+            services.AddScoped<IRegisterProductUseCase, RegisterProductUseCase>();
             #endregion
 
             return services;
