@@ -1,18 +1,13 @@
-﻿
-
-using Application.Dtos.ProductCategory.Request;
-using Application.Dtos.ProductCategory.Response;
-using Application.Dtos.ProductDtos.Request;
+﻿using Application.Dtos.ProductDtos.Request;
 using Application.Dtos.ProductDtos.Response;
 using Application.Exceptions;
 using Application.Interfaces;
-using Application.UseCases.ProductCategoryUseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastFood.Controllers.V1
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize]
     [ApiController]
     [Route("api/v1/product")]
     public class ProductController : ControllerBase

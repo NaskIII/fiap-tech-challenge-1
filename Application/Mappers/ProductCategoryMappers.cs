@@ -9,7 +9,8 @@ namespace Application.Mappers
 
         public ProductCategoryMappers()
         {
-            CreateMap<ProductCategory, ProductCategorySummaryResponse>();
+            CreateMap<ProductCategory, ProductCategorySummaryResponse>()
+                .ForMember(x => x.ProductCategoryName, z => z.MapFrom(src => src.ProductCategoryName.Value));
         }
     }
 }

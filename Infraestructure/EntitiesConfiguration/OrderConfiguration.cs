@@ -13,6 +13,9 @@ namespace Infraestructure.EntitiesConfiguration
             builder.Property(o => o.OrderId)
                    .ValueGeneratedOnAdd();
 
+            builder.Property(o => o.OrderNumber)
+                .ValueGeneratedOnAdd();
+
             builder.Property(o => o.OrderDate)
                    .IsRequired();
 
@@ -25,6 +28,9 @@ namespace Infraestructure.EntitiesConfiguration
                    .HasConversion<string>()
                    .IsRequired()
                    .HasMaxLength(50);
+
+            builder.HasIndex(builder => builder.OrderNumber)
+                   .IsUnique();
         }
     }
 }
