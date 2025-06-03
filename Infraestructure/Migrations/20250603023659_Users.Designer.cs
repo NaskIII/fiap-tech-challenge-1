@@ -3,6 +3,7 @@ using System;
 using Infraestructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    partial class ApplicationDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250603023659_Users")]
+    partial class Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,15 +225,6 @@ namespace Infraestructure.Migrations
                         .IsUnique();
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("8833c9af-a91a-411c-8b54-b554171287c0"),
-                            Email = "admin@admin.com",
-                            PasswordHash = "$2a$11$zMzsiOBzimzJNGVmnkdRleV34aqRNAtSe9Ys5lKqDZwN3hJS86jzK",
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>

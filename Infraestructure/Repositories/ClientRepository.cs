@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.RepositoryInterfaces;
+using Domain.ValueObjects;
 using Infraestructure.BaseRepository;
 using Infraestructure.DatabaseContext;
 using Infraestructure.QueryExpressionBuilder.QueryExpresson;
@@ -12,7 +13,7 @@ namespace Infraestructure.Repositories
         {
         }
 
-        public async Task<List<Client>> FilterClientAsync(string? name, string? cpf, string? email) // TODO: Ajustar filtro por CPF, o EFCore não consegue traduzir.
+        public async Task<List<Client>> FilterClientAsync(string? name, string? cpf, string? email)
         {
             QueryExpression<Client> queryBuilder = new();
 
@@ -20,21 +21,28 @@ namespace Infraestructure.Repositories
                 queryBuilder.Where(c => c.Name.Contains(name));
 
             if (!string.IsNullOrEmpty(cpf))
-                queryBuilder.Where(c => c.CPF.Value == cpf);
+            {
+                Cpf newCpf = new(cpf);
+                queryBuilder.Where(c => c.CPF == newCpf);
+            }
 
             if (!string.IsNullOrEmpty(email))
-                queryBuilder.Where(c => c.Email.Value == email);
+            {
+                Email newEmail = new(email);
+                queryBuilder.Where(c => c.Email == newEmail);
+            }
 
             var predicate = queryBuilder.Build();
 
             return await this.GetManyAsync(predicate);
         }
 
-        public async Task<Client?> GetClientByCpfAsync(string cpf) // TODO: Ajustar filtro por CPF, o EFCore não consegue traduzir.
+        public async Task<Client?> GetClientByCpfAsync(string cpf)
         {
             QueryExpression<Client> queryBuilder = new();
 
-            queryBuilder.Where(x => x.CPF.Value == cpf);
+            Cpf newCpf = new(cpf);
+            queryBuilder.Where(x => x.CPF == newCpf);
 
             var predicate = queryBuilder.Build();
 

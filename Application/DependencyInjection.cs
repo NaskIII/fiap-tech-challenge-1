@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Mappers;
 using Application.UseCases.ClientUseCases;
+using Application.UseCases.UserUseCases;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace Application
             MapperConfiguration mapperConfig = new(cfg =>
             {
                 cfg.AddProfile<ClientMappers>();
+                cfg.AddProfile<UserMappers>();
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
@@ -27,6 +29,11 @@ namespace Application
             services.AddScoped<IFilterClientsUseCase, FilterClientsUseCase>();
             services.AddScoped<IRetrieveClientUseCase, RetrieveClientUseCase>();
             services.AddScoped<IClientIdentificationUseCase, ClientIdentificationUseCase>();
+
+            services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+            services.AddScoped<IFilterUserUseCase, FilterUserUseCase>();
+            services.AddScoped<IGetUserUseCase, GetUserUseCase>();
+            services.AddScoped<IAuthenticateUserUseCase, AuthenticateUserUseCase>();
             #endregion
 
             return services;

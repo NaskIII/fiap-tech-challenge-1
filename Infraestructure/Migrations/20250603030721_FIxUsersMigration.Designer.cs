@@ -3,6 +3,7 @@ using System;
 using Infraestructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    partial class ApplicationDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250603030721_FIxUsersMigration")]
+    partial class FIxUsersMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,7 +231,7 @@ namespace Infraestructure.Migrations
                         {
                             UserId = new Guid("8833c9af-a91a-411c-8b54-b554171287c0"),
                             Email = "admin@admin.com",
-                            PasswordHash = "$2a$11$zMzsiOBzimzJNGVmnkdRleV34aqRNAtSe9Ys5lKqDZwN3hJS86jzK",
+                            PasswordHash = "$2a$11$3z3pocCPE7Lof.dKnzGXzOSU6elPCOrXUzJpzQ4eH2CyMy3LRRfwy",
                             UserName = "admin"
                         });
                 });

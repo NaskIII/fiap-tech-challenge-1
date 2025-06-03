@@ -31,8 +31,6 @@ namespace FastFood.Controllers.V1
         [HttpPost("register")]
         public async Task<IActionResult> RegisterClientAsync([FromBody] RegisterClientRequest request)
         {
-            if (request == null)
-                return BadRequest("Dados do cliente não podem ser nulos.");
             try
             {
                 Guid clientId = await _registerClientUseCase.ExecuteAsync(request);

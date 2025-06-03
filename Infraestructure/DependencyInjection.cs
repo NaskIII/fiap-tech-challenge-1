@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Security;
 using Domain.RepositoryInterfaces;
 using Infraestructure.DatabaseContext;
 using Infraestructure.OpenApiConfiguration;
@@ -104,10 +104,12 @@ namespace Infraestructure
 
             #region Repository
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             #endregion
 
             #region Services
             services.AddSingleton<ITokenService, TokenService>();
+            services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
             #endregion
 
             return services;

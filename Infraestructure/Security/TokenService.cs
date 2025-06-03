@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Security;
+using Domain.Entities;
+using Domain.ValueObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -37,6 +39,37 @@ namespace Infraestructure.Security
                 new Claim("cpf", cpf),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            var token = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_expiryMinutes),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public string GenerateToken(Guid userId, string email, string[] roles)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            };
+
+            if (roles != null)
+            {
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _issuer,

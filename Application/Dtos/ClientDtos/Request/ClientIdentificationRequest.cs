@@ -6,7 +6,7 @@ namespace Application.Dtos.ClientDtos.Request
     {
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-        [StringLength(14, ErrorMessage = "O campo {0} deve ter exatamente {1} caracteres.", MinimumLength = 14)]
+        [StringLength(11, ErrorMessage = "O campo {0} deve ter exatamente {1} caracteres.", MinimumLength = 11)]
         public string Cpf { get; set; } = default!;
     }
 }
