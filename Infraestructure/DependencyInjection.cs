@@ -1,5 +1,5 @@
-﻿using Application.Security;
-using Domain.RepositoryInterfaces;
+﻿using Domain.RepositoryInterfaces;
+using Domain.Security;
 using Infraestructure.DatabaseContext;
 using Infraestructure.OpenApiConfiguration;
 using Infraestructure.Repositories;
@@ -105,6 +105,7 @@ namespace Infraestructure
             #region Repository
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             #endregion
 
             #region Services

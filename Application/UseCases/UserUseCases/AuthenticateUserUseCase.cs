@@ -1,10 +1,10 @@
 ﻿using Application.Dtos.UserDtos.Request;
 using Application.Dtos.UserDtos.Response;
 using Application.Interfaces;
-using Application.Security;
 using AutoMapper;
 using Domain.Entities;
 using Domain.RepositoryInterfaces;
+using Domain.Security;
 using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 

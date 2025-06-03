@@ -1,4 +1,4 @@
-﻿using Application.Security;
+﻿using Domain.Security;
 
 namespace Infraestructure.Security
 {

@@ -1,8 +1,9 @@
 ﻿using Domain.BaseInterfaces;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore;
+using Domain.Exceptions;
 using Infraestructure.DatabaseContext;
 using Infraestructure.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infraestructure.BaseRepository
 {
@@ -58,6 +59,10 @@ namespace Infraestructure.BaseRepository
             }
             catch (DbUpdateException dbEx)
             {
+                if (dbEx.InnerException != null && dbEx.InnerException.Message.Contains("IX_"))
+                {
+                    throw new DuplicateEntryException("Já existe uma entidade com o mesmo valor de índice único no banco de dados.", dbEx);
+                }
                 throw new Exception("An error occurred while adding the entity to the database.", dbEx);
             }
             catch (Exception ex)
@@ -160,7 +165,11 @@ namespace Infraestructure.BaseRepository
             }
             catch (DbUpdateException dbEx)
             {
-                throw new Exception("An error occurred while updating the entity in the database.", dbEx);
+                if (dbEx.InnerException != null && dbEx.InnerException.Message.Contains("IX_"))
+                {
+                    throw new DuplicateEntryException("Já existe uma entidade com o mesmo valor de índice único no banco de dados.", dbEx);
+                }
+                throw new Exception("An error occurred while adding the entity to the database.", dbEx);
             }
             catch (Exception ex)
             {
